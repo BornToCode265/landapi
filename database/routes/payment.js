@@ -1,10 +1,12 @@
 const fs = require("fs");
 
+require('dotenv').config();
+const stripeSecretKey = process.env.stripeSecretKey;
 const stripe = require("stripe")(stripeSecretKey);
 const express = require("express");
 const router = express.Router();
 const ethers = require("ethers");
-const db = require("../conn"); // Assuming you have the connection pool setup in conn.js
+const db = require("../conn"); 
 
 router.use(express.json()); // Middleware to parse JSON bodies
 

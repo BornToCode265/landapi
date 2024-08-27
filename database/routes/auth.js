@@ -47,78 +47,47 @@ router.get("/", async (req, res) => {
   }
 });
 
-// POST a new user
+//authentication
 router.post("/", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { email, password } = req.body;
 
-  const role = "admin";
-  //exating user checks
-  const existingUser = await db.query("SELECT * FROM user WHERE email = ?", [
-    email,
-  ]);
-  if (existingUser.length > 0) {
-    return res.status(400).json({ error: "Email already exists" });
-  }
-
-  const result1 = await db.query("SELECT count(id) AS user_count FROM user");
-  let userID = result1[0].user_count;
-  const user_id = userID++;
-
-  const country = "Malawi";
-  const invite_code = "Born2Code";
-
-  const wallet = await ethers.Wallet.createRandom();
-  const publicKey = wallet.publicKey;
-  const privateKey = wallet.privateKey;
-  const keyphrase = wallet.mnemonic.phrase;
-
-  const polygon_tokensymbol = "";
-  const polygonmain_assets = "";
-  const polygontest_assets = "";
-  const network = "";
-  const bsc_tokensymbol = "";
-  const bscmain_assets = "";
-  const bsctest_assets = "";
-
-  const hashedPassword = await bcrypt.hash("password", 10);
+  console.log("prince an here lets debug");
+  console.log(password);
 
   try {
-    const result = await db.query(
-      "INSERT INTO user (username,email, password, country, invite_code, role) VALUES(?, ?, ?, ?, ?,?)",
-      [username, email, hashedPassword, country, invite_code, role]
-    );
+    const user = await db.query("SELECT * FROM user WHERE email = ?", [email]);
 
-    console.log(`results for inserrt user ${result}`);
+    if (!user || user.length === 0) {
+      return res.status(404).json({ error: "No user found" });
+    }
 
-    const walletInsertResult = await db.query(
-      "INSERT INTO wallet(user_id, publickey, privatekey, keyphrase, polygon_tokensymbol, polygonmain_assets, polygontest_assets, network, bsc_tokensymbol, bscmain_assets, bsctest_assets) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [
-        user_id,
-        publicKey,
-        privateKey,
-        keyphrase,
-        polygon_tokensymbol,
-        polygonmain_assets,
-        polygontest_assets,
-        network,
-        bsc_tokensymbol,
-        bscmain_assets,
-        bsctest_assets,
-      ]
-    );
+    const validPassword = await bcrypt.compare(password, user[0].password);
 
-    // Handle the result of the wallet insertion as needed
+    if (!validPassword) {
+      return res.status(400).json({ error: "Invalid credentials" });
+    }
 
-    res.status(201).json({ message: `User added successfully` });
-    res.redirect("/login");
+    // Generate JWT token
+    const token = jwt.sign({ userId: user[0].id }, SECRET_KEY, {
+      expiresIn: "1h",
+    });
+
+    // Store the token in the session
+    req.session.token = token;
+
+    res.status(200).json({ message: "Logged in successfully", token });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to add user" });
+    res.status(500).json({ error: "Failed to log in" });
   }
 });
 
+router.get("/protected", authenticate, async (req, res) => {
+  res.json({ message: "This route is protected" });
+});
+
 // PUT user details
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticate, async (req, res) => {
   const { id } = req.params;
   const { land, land_process, private_key, public_key, wallet_address } =
     req.body;
