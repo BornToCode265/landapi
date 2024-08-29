@@ -80,7 +80,7 @@ router.post("/", async (req, res) => {
   const bscmain_assets = "";
   const bsctest_assets = "";
 
-  const hashedPassword = await bcrypt.hash("password", 10);
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
     const result = await db.query(
@@ -88,7 +88,7 @@ router.post("/", async (req, res) => {
       [username, email, hashedPassword, country, invite_code, role]
     );
 
-    console.log(`results for inserrt user ${result}`);
+    console.log(`results for insert user ${result}`);
 
     const walletInsertResult = await db.query(
       "INSERT INTO wallet(user_id, publickey, privatekey, keyphrase, polygon_tokensymbol, polygonmain_assets, polygontest_assets, network, bsc_tokensymbol, bscmain_assets, bsctest_assets) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -108,9 +108,8 @@ router.post("/", async (req, res) => {
     );
 
     // Handle the result of the wallet insertion as needed
-
-    res.status(201).json({ message: `User added successfully` });
     res.redirect("/login");
+    //res.status(201).json({ message: `User added successfully` });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to add user" });

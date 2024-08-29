@@ -51,9 +51,6 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   const { email, password } = req.body;
 
-  console.log("prince an here lets debug");
-  console.log(password);
-
   try {
     const user = await db.query("SELECT * FROM user WHERE email = ?", [email]);
 
@@ -61,21 +58,22 @@ router.post("/", async (req, res) => {
       return res.status(404).json({ error: "No user found" });
     }
 
+    console.log(`input pass : ${password} vs from db ${user[0].password}`);
     const validPassword = await bcrypt.compare(password, user[0].password);
 
     if (!validPassword) {
       return res.status(400).json({ error: "Invalid credentials" });
     }
 
-    // Generate JWT token
-    const token = jwt.sign({ userId: user[0].id }, SECRET_KEY, {
-      expiresIn: "1h",
-    });
+    // // Generate JWT token
+    // const token = jwt.sign({ userId: user[0].id }, SECRET_KEY, {
+    //   expiresIn: "1h",
+    // });
 
-    // Store the token in the session
-    req.session.token = token;
+    // // Store the token in the session
+    // req.session.token = token;
 
-    res.status(200).json({ message: "Logged in successfully", token });
+    res.status(200).json({ message: "Logged in successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to log in" });

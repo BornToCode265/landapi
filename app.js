@@ -13,7 +13,9 @@ const baseUrl = "http://localhost:3000";
 app.use("/api/users", usersRouter);
 app.use("/api/payment", paymentRouter);
 app.use("/api/checkout", checkoutRouter);
-app.use("api/auth", authRouter);
+app.use("/api/auth", authRouter);
+
+
 
 app.set("view engine", "ejs");
 
