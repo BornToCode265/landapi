@@ -1,0 +1,117 @@
+/* Dark theme */
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2em;
+    color: #F0B90B;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* Card style for sections */
+section.card {
+    background: #1f1f1f;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 100%;
+    max-width: 450px;
+    margin: 10px 0;
+    opacity: 0;
+    animation: fadeIn 1.2s forwards;
+}
+
+h2 {
+    font-size: 1.5em;
+    color: #F0B90B;
+    margin-bottom: 15px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #333;
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+    border-radius: 4px;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #F0B90B;
+    color: #121212;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #d1a40a;
+}
+
+footer {
+    margin-top: 20px;
+    text-align: center;
+    color: #999;
+    font-size: 0.9em;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+    body {
+        padding: 10px;
+    }
+    .card {
+        padding: 15px;
+    }
+}
+/* Container to wrap the sections in a grid */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Style for each card */
+.card {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    flex: 1 1 calc(50% - 40px); /* Two cards per row with spacing */
+    max-width: 500px; /* Set max width for larger screens */
+}
+
+/* Responsive design to stack on smaller screens */
+@media (max-width: 768px) {
+    .card {
+        flex: 1 1 100%; /* Stack the cards vertically */
+    }
+}
+

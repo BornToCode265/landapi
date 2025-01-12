@@ -14,20 +14,19 @@ app.use("/api/users", usersRouter);
 app.use("/api/payment", paymentRouter);
 app.use("/api/checkout", checkoutRouter);
 app.use("/api/auth", authRouter);
-
-
-
 app.set("view engine", "ejs");
-
 app.use(express.json());
 app.use(express.static("views"));
 
 app.get("/", (req, res) => {
-  res.render("index.ejs");
+  res.render("home.ejs");
 });
 
 app.get("/register", (req, res) => {
   res.render("register.ejs");
+});
+app.get("/payment", (req, res) => {
+  res.render("payment.ejs");
 });
 app.get("/login", (req, res) => {
   res.render("login.ejs");

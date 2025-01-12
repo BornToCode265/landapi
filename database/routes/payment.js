@@ -47,7 +47,7 @@ router.post("/purchase", async function (req, res) {
         .create({
           amount: total,
           source: req.body.stripeTokenId,
-          currency: "usd",
+          currency: "MWK",
         })
         .then(function () {
           console.log("Charge Successful");

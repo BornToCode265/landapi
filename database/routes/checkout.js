@@ -11,17 +11,18 @@ const stripe = require("stripe")(str);
 const baseUrl = "http://localhost:3000";
 
 router.post("/checkout", async (req, res) => {
+  const { name, unit_amount, quantity, item_id } = req.body;
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
         price_data: {
-          currency: "usd",
+          currency: "MWK",
           product_data: {
-            name: "land",
+            name: name,
           },
-          unit_amount: 70 * 100,
+          unit_amount: unit_amount * 100,
         },
-        quantity: 1,
+        quantity: quantity,
       },
     ],
     mode: "payment",
@@ -36,6 +37,7 @@ router.get("/success_page", async (req, res) => {
   // const session = await stripe.checkout.session.retrieve(req.query.session_id, {
   //   expand: ["payment_intent.payment_method"],
   // });
+
 
   res.send(`Your payment was successful with ref : ${req.query.session_id}`);
 });

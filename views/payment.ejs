@@ -6,12 +6,24 @@
     <title>Land Sale</title>
 </head>
 <body>
-    <h1> Blantyre shop mall </h1>
-    <h2>2 ha of land </h2>
-    <h2> price : MWK 20Million</h2>
-    <form action="/checkout" method="post">
+    <h1>Blantyre Shop Mall</h1>
+    <h2>2 ha of land</h2>
+    <h2>Price: MWK 20 Million</h2>
 
-        <input type="submit" value="payment checkout">
+    <form action="/api/checkout" method="post">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="unit_amount">Unit Amount:</label>
+            <input type="number" step="0.01" id="unit_amount" name="unit_amount" required>
+        </div>
+        <div class="form-group">
+            <label for="quantity">Quantity:</label>
+            <input type="number" min="1" id="quantity" name="quantity" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Payment Checkout</button>
     </form>
 </body>
 </html>
